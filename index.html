@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>13-SecondsToKill-</title>
+    <style>
+        *{  margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        body{
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+        }
+        c{
+            border: solid white 0.1vw;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext("2d");
+        document.body.appendChild(canvas);
+        canvas.width = 1024;
+        canvas.height = 768;
+    </script>
+    <script src="scripts/functions.js"></script>
+    <script src="scripts/hud.js"></script>
+    <script src="scripts/sound/Zzfx.js"></script>
+    <script src="scripts/graphics/particles.js"></script>
+    <script src="scripts/graphics/functionDraw.js"></script>
+    <script src="scripts/graphics/bossDraw.js"></script>
+    <script src="scripts/tilesAndMap/drwTile.js"></script>
+    <script src="scripts/entities.js"></script>
+    <script src="scripts/tilesAndMap/levels.js"></script>
+    <script src="scripts/tilesAndMap/map.js"></script>
+    <script>
+    var bli = 0;
+
+    var lvls = [
+        new Level(new Map(lvl1(fill(1))),0,0,{t:3,l:50},0,KillCountCheck),
+        new Level(new Map(fill(1)),0,0,{t:3,l:50},1,),
+        new Level(new Map(fill(1)),1,0,{t:3,l:50},1,),
+        new Level(new Map(fill(1)),0,0,{t:3,l:50},1,),
+        new Level(new Map(fill(1)),0,0,{t:1,l:50},1,),
+        new Level(new Map(fill(1)),0,1,{t:1,l:50},1,),
+        new Level(new Map(fill(1)),0,0,{t:1,l:50},1,),
+        new Level(new Map(fill(1)),0,0,{t:1,l:50},1),
+        new Level(new Map(fill(1)),0,0,{t:1,l:50},1,),
+        new Level(new Map(fill(1)),0,0,{t:1,l:50},1,),
+        new Level(new Map(fill(1)),0,0,{t:1,l:50},1,),
+        new Level(new Map(fill(1)),0,0,{t:1,l:50},1,),
+        new Level(new Map(lvl13(fill(1))),0,0,{t:1,l:50},0,function(){}),
+    ]
+
+    
+    //game loop variavels
+    var tBX = {t:0 , sTX: "", aTX: "", clr:"", cTM :0},
+    ENE = [],
+    par = [],
+    blo = [],
+    clv = 0,
+    enC = 0,
+    c13 = '#28013A',
+    cpd = 0,
+    nxt = 0,
+    dis = 200,
+    rev = 0,
+    tim = setInterval(menu,1000/30),
+    k = new Player(canvas.width/2, canvas.height/3 , 64, 64),
+    All = [],F = [],
+    hud = new Hud(),
+    t = new V(0,0);
+    //menu loop variavels
+    var plM = new Player(canvas.width/2-100, canvas.height/2+100, 400, 400),
+    a = {x:-127.5, y:500,w:canvas.width*1.25,h:canvas.width*1.25},
+    b = {x:canvas.width/2 - canvas.width/3/2, y:650, w:canvas.width/3, l1:{c:0,m:0}},
+    p = {x:0, y:0,w:canvas.width,h:canvas.height}
+    //death loop variavels
+    var dBg = 0,
+    dSb = 100,
+    dt1 = 0, 
+    dt2 = 0, 
+    dSw = {x:canvas.width/2, y:canvas.height/2, w:200, h:200};
+
+    const bu = zzfxM(...[[[1.5,0,130.8128,0.03,0.4,0.27,1,0.5,,,,,,0.1,,,0.07,0.64,0.04,,107],[1.1,0,65.40639,0.04,0.91,0.06,,1.2,,,,,0.4,0.1,,,,0.52,0.09,0.22],[1.3,0,65.40639132514966,,0.02,,,1.5,,,,,,5,,,,0.7,0.02],[0.5,0,260,,,0.04,,,,,,,0.1,99,,,,2,0.005,0.2]],[[[0,0,12,0,0,0,0,0,0,-1,13,0,0,0,0,0,0,-1],[0,0,,,,,15,0,0,0,0,0,0,-1,15,0,0,0],[2,0,12,-1,,,,,,,84,-1,,,,,,],[3,0,,,,,12,-1,,,,,,,12,-1,,]]],[0],120]);
+
+    bu.loop = 1;
+    var mu = zzfxP(...bu);
+    mu.loop = 1;
+
+    function menu()
+    {   Rect(0,0,canvas.width,canvas.height,'black');
+        for (let i = 0; i < 20; i++) par.push(new Par(p, 'pur',0,1));
+        for(let i = 0; i<par.length; i++)   d(par[i],0,0) && par[i].draw();
+        upT(par);
+        sB(15,'purple')
+        DFb(a);
+        DFh(a);
+        sB(0,'purple')
+        sB(10,'purple');
+        text(canvas.width/2, canvas.height/8, '13-Seconds-To-Kill', canvas.width/10, 'purple');
+        sB(0);
+        plM.draw();
+        sB(10, 'red');
+        lB(b, 'purple',75,105,30,0);
+        lB(b, wh,75,100,25,0);
+        text(canvas.width/2, canvas.height/1.34, 'press space to play', 40, blk);
+        sB(0);
+        if(key[32])
+        {   clearInterval(tim);
+            tim = setInterval(loop,1000/30);
+        }
+    }
+    function loop()
+    {   Rect(0,0,canvas.width,canvas.height,'black');
+        F = ENE.concat(k,adi("box",lvls[clv].boxes));
+        lvls[clv].update();
+
+        for(let i = 0; i<blo.length; i++)
+           d(blo[i],0,0) && blo[i].draw();
+        
+        All = ENE.concat(k, k.b,adi("box",lvls[clv].boxes));
+        All.sort((a,b) => a.y - b.y);
+
+        for(let i = 0; i<All.length; i++)
+            d(All[i], All[i].w, All[i].h) && All[i].draw();
+
+        for(let i = 0; i<par.length; i++)
+           d(par[i],0,0) && par[i].draw();
+
+        for(var i = 0;i<adi("box",lvls[clv].boxes).length;i++)
+            adi("box",lvls[clv].boxes)[i].update();
+           
+        upT(k.b);
+        upT(ENE);
+        upT(par);
+        k.update();
+        
+        !k.D && (ang = M.atan2(mou.y - (k.y), mou.x - (k.x+k.w/2)) + M.PI*rev||M.PI/2);
+        k.d.x = cos(ang);
+        k.d.y = sin(ang);
+        if(key[87-rev*4])
+            k.s.y > -k.m && (k.s.y -= k.acel);
+        if(key[83+rev*4])
+            k.s.y < k.m && (k.s.y += k.acel);
+        if(key[65+rev*3])
+            k.s.x > -k.m && (k.s.x -= k.acel);
+        if(key[68-rev*3])
+            k.s.x < k.m && (k.s.x += k.acel);
+
+        hud.draw();
+        Rect(0,0,canvas.width*rev,canvas.height*rev,'rgba(75,0,130,0.4)');
+        drug();
+        
+        times && count();
+        (tBX.t) ? (dlg(tBX.sTX, tBX.clr, tBX.t) , tBX.t--, document.addEventListener("keyup", dS)): ((tBX.aTX != "") ? adT(tBX.aTX, tBX.clr, tBX.cTM): null);
+    }
+
+    function dead(){
+        dBg < 100 ? (dBg++, ((dBg == 99) && (par = []))) : dt1 < 100 ? dt1++ : dt2 < 100 && (dt2+=5)
+        Rect(0,0,canvas.width,canvas.height,'rgba(0,0,0,'+dBg/100+')');
+        
+        if (dt1 > 50) {
+            dSb -= 2;
+            sword(dSw, dSw.x-25, 0, 0,'red', 1);
+            for(let i = 0; i<par.length; i++)
+                d(par[i],0,0) && par[i].draw();
+            upT(par);
+            Rect(0,0,canvas.width,canvas.height,'rgba(0,0,0,'+dSb/100+')');
+        }
+        sB(10,'purple');
+        text(canvas.width/2, canvas.height-100, 'You are dead.', canvas.width/30, 'rgba(255,0,0,'+dt1/100+')');
+        text(canvas.width/2, canvas.height-50, 'The sword lays claim to your soul.', canvas.width/30, 'rgba(255,0,0,'+dt1/100+')');
+        text(canvas.width/2, 150, 'Press space to restart.', canvas.width/30, 'rgba(255,0,0,'+dt2/100+')');
+        sB(0,'purple');
+
+        dt2 == 100 && key[32] && window.location.reload();
+    }
+    function vic()
+    {   dBg < 100 ? dBg++ : dt1 < 100 ? dt1++ : (dt2 < 100 && (dt2+=5));
+        Rect(0,0,canvas.width,canvas.height,'rgba(0,0,0,'+dBg/100+')');
+        text(canvas.width/2, canvas.height/2, 'Congratulations!', canvas.width/30, 'rgba(0,255,0,'+dt1/100+')');
+        text(canvas.width/2, canvas.height/2+50, 'Now get out.', canvas.width/30, 'rgba(255,0,0,'+dt2/100+')');
+    }
+    </script></body>
+</html>
