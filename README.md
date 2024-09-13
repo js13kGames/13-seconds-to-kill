@@ -5,6 +5,6 @@ It's our firt time developing a game to 13kgames, the chalange was quite hard we
 We are sorry for the final version of the code not being very clean and readeble, but in the next year we will definitely deliver a better code. <3
 Gabriel Canto 
 Thiago Sopeña
-Rogério de Freitas
+Rogério Freitas
 ![image](https://github.com/user-attachments/assets/7a9f793b-db4d-4f26-8d43-c1b72afa55b4)
 
