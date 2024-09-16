@@ -8,3 +8,4 @@ Thiago Sopeña
 Rogério de Freitas
 ![image](https://github.com/user-attachments/assets/7a9f793b-db4d-4f26-8d43-c1b72afa55b4)
 
+we are still working on the code to make more readable.
